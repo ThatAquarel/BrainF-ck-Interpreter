@@ -1,2 +1,2 @@
 # BrainF-ck-Interpreter
-An interpreter for the BrainFuck language
+An interpreter for the BrainF-ck language
