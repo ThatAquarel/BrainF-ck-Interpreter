@@ -2,15 +2,18 @@
 #include <iostream>
 #include <cassert>
 
-#include "parser.h"
+#include "parser.hpp"
 
 using namespace std;
 
 bf_language::bf_language(int mem_size) {
     mem_ptr = new(nothrow) int[mem_size];
-    if (mem_ptr == nullptr) return;
-
     size_t mem_size_bytes = mem_size * sizeof(int);
+    if (mem_ptr == nullptr) {
+        cerr << "Could not allocate " << mem_size_bytes << " bytes of memory." << endl;
+        return;
+    }
+
     memset(mem_ptr, 0, mem_size_bytes);
 
     mem_start_ptr = mem_ptr;

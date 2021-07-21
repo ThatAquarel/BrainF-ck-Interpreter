@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(BrainF_ck_Interpreter
         src/main.cpp
-        src/parser.h
+        src/parser.hpp
         src/parser.cpp
-        src/language.h
+        src/language.hpp
         src/language.cpp)
