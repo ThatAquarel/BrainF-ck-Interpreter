@@ -9,6 +9,7 @@ using namespace std;
 class bf_language {
 public:
     explicit bf_language(int mem_size);
+
     ~bf_language();
 
     void set_instructions(const string &instructions_);
@@ -19,6 +20,8 @@ public:
     void run();
 
     void run_instruction();
+
+    string instructions;
 
 private:
     typedef void (bf_language::*language_method)();
@@ -38,8 +41,6 @@ private:
     int *mem_start_ptr;
     int *mem_end_ptr;
     int exec_ptr;
-
-    string instructions;
 
     map<int, int> match_opening_brackets;
     map<int, int> match_closing_brackets;

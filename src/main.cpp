@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <sys/stat.h>
+
 #include "parser.hpp"
 
 using namespace std;
@@ -37,7 +38,7 @@ int main(int argc, char **argv) {
 
     auto *lang = new bf_language(mem_size);
     parse_instructions(text, lang);
-    parse_brackets(text, lang);
+    parse_brackets(lang->instructions, lang);
 
     lang->run();
 
