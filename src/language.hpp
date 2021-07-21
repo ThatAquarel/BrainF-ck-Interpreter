@@ -23,6 +23,11 @@ public:
 
     string instructions;
 
+    int *mem_start_ptr;
+    int *mem_ptr;
+    int *mem_end_ptr;
+    int exec_ptr;
+
 private:
     typedef void (bf_language::*language_method)();
 
@@ -36,11 +41,6 @@ private:
             {'[', &bf_language::loop},
             {']', &bf_language::end_loop},
     };
-
-    int *mem_ptr;
-    int *mem_start_ptr;
-    int *mem_end_ptr;
-    int exec_ptr;
 
     map<int, int> match_opening_brackets;
     map<int, int> match_closing_brackets;

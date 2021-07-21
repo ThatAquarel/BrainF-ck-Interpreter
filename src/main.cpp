@@ -42,6 +42,7 @@ int main(int argc, char **argv) {
 
     lang->run();
 
+    int return_value = *(lang->mem_start_ptr);
     delete lang;
-    return 0;
+    return return_value;
 }
