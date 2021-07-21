@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <cstring>
 #include <cassert>
 
 #include "parser.hpp"

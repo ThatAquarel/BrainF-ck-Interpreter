@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <sys/stat.h>
 #include "parser.hpp"
 
 using namespace std;
