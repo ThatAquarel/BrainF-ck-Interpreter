@@ -1,101 +1,80 @@
-#include <cstdlib>
+#include <vector>
 #include <iostream>
-#include <functional>
-#include <map>
-#include "language.h"
+#include <cassert>
+
+#include "parser.h"
 
 using namespace std;
 
 bf_language::bf_language(int mem_size) {
-    mem_ptr = (int *) malloc(mem_size * sizeof(int));
-    if (!mem_ptr) return;
+    mem_ptr = new(nothrow) int[mem_size];
+    if (mem_ptr == nullptr) return;
 
-    data_ptr = mem_ptr;
+    size_t mem_size_bytes = mem_size * sizeof(int);
+    memset(mem_ptr, 0, mem_size_bytes);
+
+    mem_start_ptr = mem_ptr;
+    mem_end_ptr = mem_ptr + mem_size_bytes;
+
     exec_ptr = 0;
 }
 
-void bf_language::instruction_handler(const string &instructions_) {
+bf_language::~bf_language() {
+    delete[] mem_start_ptr;
+}
+
+void bf_language::set_instructions(const string &instructions_) {
     instructions = instructions_;
+}
+
+void bf_language::set_brackets(const map<int, int> &opening_brackets_,
+                               const map<int, int> &closing_brackets_) {
+    match_opening_brackets = opening_brackets_;
+    match_closing_brackets = closing_brackets_;
 }
 
 void bf_language::run() {
     while (exec_ptr < instructions.size()) {
-        char instruction = instructions[exec_ptr];
-
-        map<char, > func_map = {
-                {'>', inc_ptr},
-                {'<', dec_ptr},
-                {'+', inc_ptr_data},
-                {'-', dec_ptr_data},
-                {'.', get_ptr},
-                {',', put_ptr},
-                {'[', loop},
-                {']', end_loop}
-        };
-
-        static_func func = func_map['>'];
-        (*func)(this);
-
-//        switch (instruction) {
-//            case '>':
-//                inc_ptr();
-//                break;
-//            case '<':
-//                dec_ptr();
-//                break;
-//            case '+':
-//                inc_ptr_data();
-//                break;
-//            case '-':
-//                dec_ptr_data();
-//                break;
-//            case '.':
-//                get_ptr();
-//                break;
-//            case ',':
-//                put_ptr();
-//                break;
-//            case '[':
-//                loop();
-//                break;
-//            case ']':
-//                end_loop();
-//                break;
-//            default:
-//                continue;
-//        }
+        run_instruction();
         exec_ptr++;
     }
 }
 
-void bf_language::inc_ptr(bf_language *lang) {
+void bf_language::run_instruction() {
+    assert(mem_ptr >= mem_start_ptr);
+    assert(mem_ptr < mem_end_ptr);
 
+    char instruction = instructions[exec_ptr];
+
+    language_method method = method_map[instruction];
+    (*this.*method)();
 }
 
-void bf_language::dec_ptr(bf_language *lang) {
+void bf_language::inc_ptr() { mem_ptr++; }
 
+void bf_language::dec_ptr() { mem_ptr--; }
+
+void bf_language::inc_ptr_data() { (*mem_ptr)++; }
+
+void bf_language::dec_ptr_data() { (*mem_ptr)--; }
+
+void bf_language::get_ptr() { cout << (char) *mem_ptr; }
+
+void bf_language::put_ptr() { *mem_ptr = getchar(); }
+
+void bf_language::loop() {
+    int loop_end = match_opening_brackets[exec_ptr] + 1;
+    int *loop_start_mem_ptr = mem_ptr;
+
+    exec_ptr++;
+    while (*loop_start_mem_ptr) {
+        while (exec_ptr < loop_end && *loop_start_mem_ptr) {
+            run_instruction();
+            exec_ptr++;
+        }
+    }
 }
 
-void bf_language::inc_ptr_data(bf_language *lang) {
-
-}
-
-void bf_language::dec_ptr_data(bf_language *lang) {
-
-}
-
-void bf_language::get_ptr(bf_language *lang) {
-
-}
-
-void bf_language::put_ptr(bf_language *lang) {
-
-}
-
-void bf_language::loop(bf_language *lang) {
-
-}
-
-void bf_language::end_loop(bf_language *lang) {
-
+void bf_language::end_loop() {
+    exec_ptr = match_closing_brackets[exec_ptr];
 }

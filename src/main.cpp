@@ -1,8 +1,5 @@
 #include <filesystem>
-#include <string>
-
 #include "parser.h"
-#include "language.h"
 
 using namespace std;
 
@@ -16,10 +13,11 @@ int main(int argc, char **argv) {
     parse_file(text, filename);
 
     auto *lang = new bf_language(128);
-    lang->instruction_handler(text);
-//    parse_instructions(text, lang);
+    parse_instructions(text, lang);
+    parse_brackets(text, lang);
 
     lang->run();
 
+    delete lang;
     return 0;
 }

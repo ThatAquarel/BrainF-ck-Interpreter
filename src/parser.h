@@ -1,4 +1,5 @@
 #include <string>
+#include <tuple>
 #include "language.h"
 
 using namespace std;
@@ -8,8 +9,8 @@ using namespace std;
 
 void parse_file(string &text, const string &filename);
 
-//void parse_instructions(string &text, void (*instruction_handler)(char));
-//void parse_instructions(string &text, void (bf_language::*instruction_handler)(char), bf_language &lang);
 void parse_instructions(string &text, bf_language *lang);
+
+void parse_brackets(string &instructions, bf_language *lang);
 
 #endif //BRAINF_CK_INTERPRETER_STRING_UTIL_H

@@ -2,9 +2,9 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <map>
 
 #include "parser.h"
-#include "language.h"
 
 using namespace std;
 
@@ -28,10 +28,33 @@ void parse_instructions(string &text, bf_language *lang) {
 
         if (c_ptr != end(allowed_chars)) {
             instruction_stream << c;
-//            (*lang).instruction_handler(nullptr);
         }
     }
 
     getline(instruction_stream, instructions);
-    (*lang).instruction_handler(instructions);
+
+    (*lang).set_instructions(instructions);
+}
+
+void parse_brackets(string &instructions, bf_language *lang) {
+    vector<int> temp;
+
+    map<int, int> opening_brackets;
+    map<int, int> closing_brackets;
+
+    char c;
+    for (int i = 0; i < instructions.size(); i++) {
+        c = instructions[i];
+
+        if (c == '[') {
+            temp.push_back(i);
+        } else if (c == ']') {
+            opening_brackets[temp[temp.size() - 1]] = i;
+            closing_brackets[i] = temp[temp.size() - 1];
+
+            temp.pop_back();
+        }
+    }
+
+    (*lang).set_brackets(opening_brackets, closing_brackets);
 }
