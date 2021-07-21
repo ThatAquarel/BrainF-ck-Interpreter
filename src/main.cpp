@@ -1,5 +1,7 @@
 #include <filesystem>
 #include <iostream>
+#include <string>
+
 #include "parser.hpp"
 
 using namespace std;
@@ -12,7 +14,9 @@ int main(int argc, char **argv) {
     }
 
     string filename = argv[1];
-    if (!filesystem::exists(filename)) {
+
+    struct stat buffer{};
+    if (stat(filename.c_str(), &buffer) != 0) {
         cerr << "File \"" << filename << "\" does not exist." << endl;
         return -1;
     }
