@@ -45,8 +45,7 @@ void bf_language::run() {
 }
 
 void bf_language::run_instruction() {
-    assert(mem_ptr >= mem_start_ptr);
-    assert(mem_ptr < mem_end_ptr);
+    assert(mem_start_ptr <= mem_ptr && mem_ptr < mem_end_ptr && "Memory pointer out of range.");
 
     char instruction = instructions[exec_ptr];
 
@@ -66,19 +65,6 @@ void bf_language::get_ptr() { cout << (char) *mem_ptr; }
 
 void bf_language::put_ptr() { *mem_ptr = getchar(); }
 
-void bf_language::loop() {
-    int loop_end = match_opening_brackets[exec_ptr] + 1;
-    int *loop_start_mem_ptr = mem_ptr;
+void bf_language::loop() { if (!*mem_ptr) exec_ptr = match_opening_brackets[exec_ptr]; }
 
-    exec_ptr++;
-    while (*loop_start_mem_ptr) {
-        while (exec_ptr < loop_end && *loop_start_mem_ptr) {
-            run_instruction();
-            exec_ptr++;
-        }
-    }
-}
-
-void bf_language::end_loop() {
-    exec_ptr = match_closing_brackets[exec_ptr];
-}
+void bf_language::jmp_loop_start() { exec_ptr = match_closing_brackets[exec_ptr] - 1; }

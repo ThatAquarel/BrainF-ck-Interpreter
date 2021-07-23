@@ -39,7 +39,7 @@ private:
             {'.', &bf_language::get_ptr},
             {',', &bf_language::put_ptr},
             {'[', &bf_language::loop},
-            {']', &bf_language::end_loop},
+            {']', &bf_language::jmp_loop_start},
     };
 
     map<int, int> match_opening_brackets;
@@ -59,7 +59,7 @@ private:
 
     void loop();
 
-    void end_loop();
+    void jmp_loop_start();
 };
 
 #endif //BRAINF_CK_INTERPRETER_LANGUAGE_H
