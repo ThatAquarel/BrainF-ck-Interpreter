@@ -62,6 +62,7 @@ void bf_language::inc_ptr_data() { (*mem_ptr)++; }
 void bf_language::dec_ptr_data() { (*mem_ptr)--; }
 
 void bf_language::get_ptr() { cout << (char) *mem_ptr; }
+//void bf_language::get_ptr() { cout << *mem_ptr << endl; }
 
 void bf_language::put_ptr() { *mem_ptr = getchar(); }
 

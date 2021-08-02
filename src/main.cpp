@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
 
     lang->run();
 
-    int return_value = *(lang->mem_ptr);
-     delete lang;
-    return return_value;
+    cout << *(lang->mem_ptr);
+    delete lang;
+    return 0;
 }
